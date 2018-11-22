@@ -1,0 +1,77 @@
+﻿@model TwitterClone.Models.TweetViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<head>
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>  
+    <script language="javascript" type="text/javascript">
+        $(function () {
+            window.setInterval(function () { $('#tweets').load('/Tweet/UpdateTweets'); }, 2000);
+            
+        });
+    </script>
+</head>
+<h4 style="text-align:center"> MY TWITTER CLONE</h4>
+<div class="container">
+    @using (Html.BeginForm("Search", "Tweet", FormMethod.Get))
+    {
+
+        <div class="row">
+            <div class="form-group">
+                <input class="form-control col-md-4" type="text" placeholder="Search" aria-label="Search" name="search" id="search">
+                <div class="col-md-8">
+                    <input type="submit" value="Search" class="btn btn-default" onclick="location.href = '@Url.Action("Search", "Tweet")'"/>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-8" style="text-align: right">
+                @Html.DisplayFor(m => m.Followers, new { @class = "form-control" }) <span>Followers</span>
+                @Html.DisplayFor(m => m.Following, new { @class = "form-control" }) <span>Following</span>
+                @Html.DisplayFor(m => m.Tweets.Count, new { @class = "form-control" }) <span>Tweets</span>
+            </div>
+        </div>
+    </div>
+
+    <p>What are you doing?</p>
+    @*<div class="row">
+        <div class="col-md-8">*@
+    <section id="loginForm">
+        @*@using (Html.BeginForm("Home", "Tweet", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))*@
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="row">
+                <div class="form-group">
+                    @*@Html.HiddenFor(m => m.Message, new { @class = "col-md-2 control-label" })*@
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(m => m.Message, new { @class = "form-control", @style = "width: 100%; max-width: 100%;", @rows = "5", @name = "message" })
+                        @Html.ValidationMessageFor(m => m.Message, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-10" style="text-align: right">
+                        <input type="submit" value="Update" class="btn btn-default"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="tweets">
+                @Html.Partial("_TweetsPartial", @Model.Tweets)
+            </div>
+
+        }
+    </section>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

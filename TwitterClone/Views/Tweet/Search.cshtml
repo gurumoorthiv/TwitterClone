@@ -1,0 +1,16 @@
+﻿@model TwitterClone.Models.Person
+
+<h4 style="text-align:center"> Hello @Model.UserId !</h4>
+<div class="container">
+    @using (Html.BeginForm("Search", "Tweet", FormMethod.Post))
+    {
+        <div class="row">
+            <div class="form-group">
+                @Html.HiddenFor(x => x.UserId)
+                <div class="col-md-8">
+                    <input type="submit" value="Follow" class="btn btn-default"/>
+                </div>
+            </div>
+        </div>
+    }
+</div>
